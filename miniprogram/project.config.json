@@ -1,0 +1,12 @@
+{
+  "appid": "touristappid",
+  "compileType": "miniprogram",
+  "cloudfunctionRoot": "cloudfunctions/",
+  "libVersion": "latest",
+  "projectname": "office-file-assistant",
+  "setting": {
+    "es6": true,
+    "minified": true,
+    "postcss": true
+  }
+}

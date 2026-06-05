@@ -1,0 +1,21 @@
+<view class="page">
+  <view class="hero">
+    <text class="eyebrow">PDF · 云处理</text>
+    <text class="title">PDF 工具</text>
+    <text class="desc">选择 PDF 合并，或选择图片转 PDF。首版不做拆分和提取页面，避免半成品。</text>
+    <button class="primary" bindtap="choosePdf">选择 PDF 合并</button>
+    <button class="secondary" bindtap="chooseImages">选择图片转 PDF</button>
+  </view>
+
+  <view class="panel" wx:if="{{files.length}}">
+    <text class="section-title">已选择 {{files.length}} 个文件</text>
+    <view class="file-line" wx:for="{{files}}" wx:key="id">
+      <text>{{item.name}}</text>
+      <text>{{item.sizeLabel}}</text>
+    </view>
+    <button class="primary full" bindtap="processFiles" loading="{{isProcessing}}" disabled="{{isProcessing}}">
+      {{mode === 'mergePdf' ? '合并 PDF' : '生成 PDF'}}
+    </button>
+    <text class="error" wx:if="{{error}}">{{error}}</text>
+  </view>
+</view>

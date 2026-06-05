@@ -1,0 +1,43 @@
+<view class="page">
+  <view class="hero">
+    <text class="eyebrow">小程序优先 · 微信轻办公</text>
+    <text class="title">{{productName}}</text>
+    <text class="desc">围绕拍图识字、扫描成 PDF、PDF 轻处理和图片工具，把微信里常见文件任务压到三步内完成。</text>
+  </view>
+
+  <view class="grid">
+    <button
+      class="tool-card"
+      wx:for="{{tools}}"
+      wx:key="slug"
+      bindtap="openTool"
+      data-path="{{item.path}}"
+      data-slug="{{item.slug}}"
+    >
+      <text class="eyebrow">{{item.category}} · {{item.mode === 'native' ? '本机可用' : '云处理'}}</text>
+      <text class="tool-title">{{item.name}}</text>
+      <text class="tool-desc">{{item.desc}}</text>
+    </button>
+  </view>
+
+  <view class="panel">
+    <text class="section-title">首版能力说明</text>
+    <text class="muted">图片工具在小程序端直接处理；OCR、扫描成 PDF、PDF 合并/转换通过云函数完成。H5 仅作为高级备用和内容承接。</text>
+  </view>
+
+  <view class="panel">
+    <text class="section-title">最近使用</text>
+    <block wx:if="{{recent.length}}">
+      <view class="file-line" wx:for="{{recent}}" wx:key="id">
+        <text>{{item.tool}}</text>
+        <text>{{item.name}}</text>
+      </view>
+    </block>
+    <text class="muted" wx:else>完成任务后，本地保留最近 5 次记录，仅保存工具名、文件名和状态。</text>
+  </view>
+
+  <view class="panel">
+    <text class="section-title">反馈入口</text>
+    <text class="muted">遇到识别不准、PDF 失败或保存问题，可以在结果页提交反馈；我们只记录工具、错误类型和用户填写内容。</text>
+  </view>
+</view>

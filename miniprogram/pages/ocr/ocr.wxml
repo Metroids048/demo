@@ -1,0 +1,25 @@
+<view class="page">
+  <view class="hero">
+    <text class="eyebrow">OCR · 云识别</text>
+    <text class="title">拍图识字</text>
+    <text class="desc">拍照或选图后上传到云函数识别。若 OCR 服务未配置，会明确提示，不展示模拟结果。</text>
+    <button class="primary" bindtap="chooseImage">选择或拍照</button>
+  </view>
+
+  <view class="panel" wx:if="{{imagePath}}">
+    <image class="preview" src="{{imagePath}}" mode="aspectFill" />
+    <view class="row">
+      <text>待识别图片</text>
+      <text>{{sizeLabel}}</text>
+    </view>
+    <button class="primary full" bindtap="recognizeImage" loading="{{isProcessing}}" disabled="{{isProcessing}}">
+      开始识别
+    </button>
+    <text class="error" wx:if="{{error}}">{{error}}</text>
+  </view>
+
+  <view class="panel">
+    <text class="section-title">隐私提示</text>
+    <text class="muted">票据、合同、证件可能包含个人信息。OCR 会短期上传处理，后续需在云端配置自动删除策略。</text>
+  </view>
+</view>

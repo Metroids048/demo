@@ -1,0 +1,61 @@
+<view class="page">
+  <view class="hero">
+    <text class="eyebrow">本地优先 · 小程序轻壳</text>
+    <text class="title">图片压缩助手</text>
+    <text class="desc">选择图片后用微信原生压缩能力生成更小文件，适合先验证小程序入口。</text>
+    <button class="primary" bindtap="chooseImage" loading="{{isProcessing}}" disabled="{{isProcessing}}">
+      选择图片
+    </button>
+  </view>
+
+  <view class="panel" wx:if="{{sourcePath}}">
+    <image class="preview" src="{{sourcePath}}" mode="aspectFill" />
+    <view class="row">
+      <text>原图</text>
+      <text>{{sourceSizeLabel}}</text>
+    </view>
+  </view>
+
+  <view class="panel">
+    <view class="label-row">
+      <text>压缩质量</text>
+      <text>{{quality}}%</text>
+    </view>
+    <slider min="30" max="95" step="5" value="{{quality}}" activeColor="#146c5c" bindchange="changeQuality" />
+    <button class="primary full" bindtap="compressImage" loading="{{isProcessing}}" disabled="{{!sourcePath || isProcessing}}">
+      开始压缩
+    </button>
+    <text class="error" wx:if="{{error}}">{{error}}</text>
+  </view>
+
+  <view class="panel" wx:if="{{resultPath}}">
+    <image class="preview" src="{{resultPath}}" mode="aspectFill" />
+    <view class="result-grid">
+      <view>
+        <text class="metric-label">结果</text>
+        <text class="metric-value">{{resultSizeLabel}}</text>
+      </view>
+      <view>
+        <text class="metric-label">节省</text>
+        <text class="metric-value">{{savedRate}}%</text>
+      </view>
+    </view>
+    <button class="secondary full" bindtap="saveResult">保存到相册</button>
+  </view>
+
+  <view class="panel">
+    <text class="section-title">最近使用</text>
+    <block wx:if="{{recent.length}}">
+      <button class="recent" wx:for="{{recent}}" wx:key="id" bindtap="reuseRecent" data-quality="{{item.quality}}">
+        <text>{{item.name}}</text>
+        <text>{{item.original}} → {{item.output}}</text>
+      </button>
+    </block>
+    <text class="muted" wx:else>完成一次压缩后，本地保存最近 5 次参数。</text>
+  </view>
+
+  <view class="panel">
+    <text class="section-title">隐私说明</text>
+    <text class="muted">首版不上传图片，不做云历史。保存到相册需要用户授权。</text>
+  </view>
+</view>

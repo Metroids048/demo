@@ -1,0 +1,20 @@
+<view class="page">
+  <view class="hero">
+    <text class="eyebrow">H5 · 备用</text>
+    <text class="title">打开高级备用版</text>
+    <text class="desc">小程序端是首版主体验。H5 仅用于高级处理、SEO 承接，或云能力暂不可用时的备用路径。</text>
+  </view>
+
+  <view class="panel">
+    <text class="section-title">处理链接</text>
+    <text class="muted break-all">{{h5Url}}</text>
+    <button class="primary full" bindtap="copyLink">复制 H5 链接</button>
+    <button class="secondary full" bindtap="backHome">回到工具中心</button>
+  </view>
+
+  <view class="panel webview-panel" wx:if="{{showWebView}}">
+    <text class="section-title">内嵌 H5</text>
+    <text class="muted">部署并配置业务域名后，可直接在下方打开 H5。</text>
+    <web-view src="{{h5Url}}"></web-view>
+  </view>
+</view>

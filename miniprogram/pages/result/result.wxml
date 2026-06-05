@@ -1,0 +1,84 @@
+<view class="page">
+  <view class="hero">
+    <text class="eyebrow">RESULT · 统一结果</text>
+    <text class="title">{{tool}}</text>
+    <text class="desc">{{name}}</text>
+  </view>
+
+  <view class="panel" wx:if="{{error}}">
+    <text class="error">{{error}}</text>
+    <button class="primary full" bindtap="backHome">回到工具中心</button>
+  </view>
+
+  <view class="panel" wx:if="{{kind === 'text' && !error}}">
+    <text class="section-title">识别结果</text>
+    <textarea class="result-textarea" value="{{text}}" disabled />
+    <view class="result-grid">
+      <view>
+        <text class="metric-label">置信度</text>
+        <text class="metric-value">{{confidenceLabel || '-'}}</text>
+      </view>
+      <view>
+        <text class="metric-label">耗时</text>
+        <text class="metric-value">{{durationMs}}ms</text>
+      </view>
+    </view>
+    <button class="primary full" bindtap="copyText">复制文字</button>
+  </view>
+
+  <view class="panel" wx:if="{{kind === 'pdf' && !error}}">
+    <text class="section-title">PDF 已生成</text>
+    <view class="result-grid">
+      <view>
+        <text class="metric-label">页数</text>
+        <text class="metric-value">{{pageCount}}</text>
+      </view>
+      <view>
+        <text class="metric-label">大小</text>
+        <text class="metric-value">{{resultSize || '-'}}</text>
+      </view>
+    </view>
+    <button class="primary full" bindtap="previewPdf">预览 PDF</button>
+    <button class="secondary full" bindtap="sharePdf">分享 PDF</button>
+  </view>
+
+  <view class="panel" wx:if="{{kind === 'image' && !error}}">
+    <image class="preview" src="{{resultPath}}" mode="aspectFill" wx:if="{{resultPath}}" />
+    <view class="result-grid">
+      <view>
+        <text class="metric-label">结果大小</text>
+        <text class="metric-value">{{resultSize}}</text>
+      </view>
+      <view>
+        <text class="metric-label">节省</text>
+        <text class="metric-value">{{savedRate}}%</text>
+      </view>
+    </view>
+    <button class="primary full" bindtap="saveImage">保存到相册</button>
+  </view>
+
+  <view class="panel" wx:if="{{!error}}">
+    <text class="section-title">反馈</text>
+    <view class="rating-row">
+      <button class="tiny" bindtap="changeRating" data-rating="3">一般</button>
+      <button class="tiny" bindtap="changeRating" data-rating="4">可用</button>
+      <button class="tiny" bindtap="changeRating" data-rating="5">很好</button>
+    </view>
+    <textarea class="feedback-input" placeholder="哪里不好用、识别不准或导出失败，都可以写在这里。" value="{{feedbackContent}}" bindinput="changeFeedback" />
+    <button class="secondary full" bindtap="feedbackSubmit">提交反馈</button>
+    <text class="muted" wx:if="{{feedbackMessage}}">{{feedbackMessage}}</text>
+  </view>
+
+  <view class="panel" wx:if="{{relatedTools.length}}">
+    <text class="section-title">下一步工具</text>
+    <button
+      class="secondary full"
+      wx:for="{{relatedTools}}"
+      wx:key="slug"
+      bindtap="openRelated"
+      data-slug="{{item.slug}}"
+    >
+      {{item.name}}
+    </button>
+  </view>
+</view>

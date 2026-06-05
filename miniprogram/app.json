@@ -1,0 +1,20 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/ocr/ocr",
+    "pages/scan-pdf/scan-pdf",
+    "pages/pdf-tools/pdf-tools",
+    "pages/image-tools/image-tools",
+    "pages/result/result",
+    "pages/h5-bridge/h5-bridge",
+    "pages/index/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "手机办公文件处理助手",
+    "navigationBarBackgroundColor": "#146c5c",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f6f7f4"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

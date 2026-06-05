@@ -1,0 +1,7 @@
+.break-all {
+  word-break: break-all;
+}
+
+.webview-panel {
+  min-height: 480rpx;
+}

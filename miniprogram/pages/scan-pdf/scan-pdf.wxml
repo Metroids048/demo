@@ -1,0 +1,23 @@
+<view class="page">
+  <view class="hero">
+    <text class="eyebrow">SCAN · 云生成 PDF</text>
+    <text class="title">扫描成 PDF</text>
+    <text class="desc">选择多张图片，按当前顺序上传云函数生成 PDF。首版不做边缘矫正和扫描增强。</text>
+    <button class="primary" bindtap="chooseImages">选择图片</button>
+  </view>
+
+  <view class="panel" wx:if="{{files.length}}">
+    <text class="section-title">已选择 {{files.length}} 张</text>
+    <view class="file-line" wx:for="{{files}}" wx:key="id">
+      <text>第 {{index + 1}} 页 · {{item.sizeLabel}}</text>
+      <view>
+        <button class="tiny" bindtap="moveUp" data-index="{{index}}">上移</button>
+        <button class="tiny danger" bindtap="removeFile" data-id="{{item.id}}">删除</button>
+      </view>
+    </view>
+    <button class="primary full" bindtap="createPdf" loading="{{isProcessing}}" disabled="{{isProcessing}}">
+      生成 PDF
+    </button>
+    <text class="error" wx:if="{{error}}">{{error}}</text>
+  </view>
+</view>

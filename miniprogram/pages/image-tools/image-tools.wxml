@@ -1,0 +1,36 @@
+<view class="page">
+  <view class="hero">
+    <text class="eyebrow">IMAGE · 本机可用</text>
+    <text class="title">图片工具</text>
+    <text class="desc">小程序端直接压缩图片、限制最长边并保存到相册。更复杂的格式转换放到 H5 高级备用。</text>
+    <button class="primary" bindtap="chooseImage">选择图片</button>
+  </view>
+
+  <view class="panel" wx:if="{{sourcePath}}">
+    <image class="preview" src="{{sourcePath}}" mode="aspectFill" />
+    <view class="row">
+      <text>原图</text>
+      <text>{{sourceSizeLabel}}</text>
+    </view>
+  </view>
+
+  <view class="panel">
+    <view class="row">
+      <text>压缩质量</text>
+      <text>{{quality}}%</text>
+    </view>
+    <slider min="30" max="95" step="5" value="{{quality}}" activeColor="#146c5c" bindchange="changeQuality" />
+    <view class="row">
+      <text>最长边</text>
+      <text>{{maxWidth}}px</text>
+    </view>
+    <slider min="720" max="2560" step="160" value="{{maxWidth}}" activeColor="#146c5c" bindchange="changeMaxWidth" />
+    <button class="primary full" bindtap="compressImage" loading="{{isProcessing}}" disabled="{{!sourcePath || isProcessing}}">处理图片</button>
+    <text class="error" wx:if="{{error}}">{{error}}</text>
+  </view>
+
+  <canvas
+    canvas-id="resizeCanvas"
+    style="width: {{canvasWidth}}px; height: {{canvasHeight}}px; position: fixed; left: -9999px; top: -9999px;"
+  />
+</view>
