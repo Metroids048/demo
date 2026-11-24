@@ -1,55 +1,35 @@
-# 手机办公文件处理助手：小程序优先版
+# 手机办公文件处理助手
 
-这是一个小程序优先的轻办公文件处理 MVP。当前定位不是“图片压缩工具”，而是在微信里完成拍图识字、扫描成 PDF、PDF 合并/图片转 PDF、图片轻处理等高频任务。
+一个面向微信小程序的轻办公 MVP，帮助用户从手机里的照片和文件快速提取文字、生成 PDF 或缩小图片。仓库同时提供 H5 版本，方便直接在浏览器体验基本流程。
 
-## 首版能力
+| 场景 | 微信小程序 | H5 |
+| --- | --- | --- |
+| 从照片取字 | 选图或拍照，经 CloudBase 调用腾讯云 OCR | 通过 Tesseract.js 在浏览器识别 |
+| 把多张图片整理成 PDF | 选图、排序，经云函数生成 PDF | 在浏览器生成 PDF |
+| 合并 PDF | 选文件并经云函数处理 | 在浏览器合并 |
+| 图片压缩 | 原生压缩，支持最长边限制 | 浏览器内调整尺寸和压缩 |
 
-| 工具 | 小程序端 | H5 |
-|---|---|---|
-| 拍图识字 | 选图/拍照、上传云函数、云 OCR、端内复制和反馈 | 备用 OCR/SEO 承接 |
-| 扫描成 PDF | 多图选择、排序、云函数生成 PDF、预览和分享 | 备用生成 PDF |
-| PDF 工具 | 选择 PDF 合并，或选择图片转 PDF | 备用高级处理 |
-| 图片工具 | 原生压缩、最长边限制、保存相册 | 高级格式转换备用 |
+## 在浏览器运行
 
-首版不做 PDF 拆分/提取页、去背景、证件照、账号、会员、云历史、Mermaid/Markmap/Excalidraw。
+使用 Node.js 22.12+（推荐 24 LTS）和 npm。从仓库根目录运行以下命令，打开 [http://localhost:5173](http://localhost:5173)。H5 不需要腾讯云凭据。浏览器 OCR 首次使用可能需要联网加载识别资源。
 
-## 目录
-
-- `miniprogram/`：小程序主体验，含工具页、统一结果页、云调用、错误处理、最近记录和埋点。
-- `cloudfunctions/`：CloudBase 云函数，包含 `ocrRecognize`、`pdfProcess`、`feedbackSubmit`。
-- `src/`：H5 备用版和 shared core，保留 SEO/内容承接与本地处理能力。
-- `docs/`：PRD、交互设计、上架资料、增长留存、验收矩阵和发布管理。
-
-## 本地运行
-
-```bash
-npm install
+```sh
+npm ci
 npm run dev
 ```
 
-H5 默认地址为 `http://localhost:5173`。小程序导入 `miniprogram/`，并在微信开发者工具里配置真实 `appid`、云环境和云函数。
+## 配置微信小程序
 
-## 云函数配置
+1. 在微信开发者工具中导入 `miniprogram/`。仓库使用测试 AppID 占位。连接云开发时，请使用自己的 AppID 和 CloudBase 环境。
+2. 在本地设置 `miniprogram/utils/config.js` 的 `CLOUD_ENV_ID`。不要提交真实环境配置。
+3. 在开发者工具中将云函数目录指向仓库根目录下独立的 `cloudfunctions/`，部署 `ocrRecognize`、`pdfProcess` 和 `feedbackSubmit`。
+4. 在 `ocrRecognize` 的云函数环境变量中配置 `TENCENTCLOUD_SECRET_ID`、`TENCENTCLOUD_SECRET_KEY`，可选配置 `TENCENTCLOUD_OCR_REGION`。凭据只用于云函数。未配置时，OCR 会返回 `OCR_NOT_CONFIGURED`。
 
-1. 在 `miniprogram/utils/config.js` 设置 `CLOUD_ENV_ID`。
-2. 在微信开发者工具上传 `cloudfunctions/ocrRecognize`、`cloudfunctions/pdfProcess`、`cloudfunctions/feedbackSubmit`。
-3. OCR 需要在云函数环境变量配置 `TENCENTCLOUD_SECRET_ID`、`TENCENTCLOUD_SECRET_KEY`，可选 `TENCENTCLOUD_OCR_REGION`。
-4. 未配置 OCR 凭证时，`ocrRecognize` 会返回 `OCR_NOT_CONFIGURED`，小程序会显示“服务未配置”，不会展示模拟结果。
+## 代码与验证
 
-## 验证
+- `miniprogram/` 包含工具页、处理结果页与小程序云调用。
+- `cloudfunctions/` 包含 OCR、PDF 处理和反馈接口。
+- `src/` 包含 H5 界面、处理逻辑和测试。
+- [验收矩阵](docs/verification-matrix.md)列出本地检查和微信真机、CloudBase 部署需要完成的检查。
 
-```bash
-npm run verify
-npm audit --audit-level=critical
-```
-
-`npm run verify` 覆盖类型检查、单元测试、云函数契约测试、小程序静态检查和 H5 构建。
-
-## 关键文档
-
-- [PRD](docs/prd.md)
-- [小程序上架资料](docs/mini-program-submission.md)
-- [交互设计说明](docs/interaction-design.md)
-- [增长与留存](docs/growth-assets.md)
-- [项目发布管理](docs/project-management.md)
-- [上线前验收矩阵](docs/verification-matrix.md)
+`npm run verify` 执行 TypeScript 检查、Vitest 和 H5 生产构建。
